@@ -12,6 +12,7 @@ const AccessPage = () => {
     const [user, setUser] = useState('')
     const [password, setPassword] = useState('')
     const [remember, setRemember] = useState(false)
+    const [error, setError] = useState('')
 
     const dispatch = useDispatch()
     const history = useHistory()
@@ -35,7 +36,8 @@ const AccessPage = () => {
 
     const onLogin = (event) => {
         event.preventDefault()
-        
+        setError('')
+
         let bodyRequest = {
             email: user,
             password: password
@@ -57,7 +59,8 @@ const AccessPage = () => {
             history.push('/main')
         })
         .catch((res) => {
-            console.log('catch: ', res)
+            console.log('catch: ', res.response.data.error)
+            setError(res.response.data.error)
         })
         
     }
@@ -73,6 +76,8 @@ const AccessPage = () => {
     const onClickCheckBox = (event) => {
         setRemember(event.target.checked)
     }
+
+
 
     return (
         <section className="access">
@@ -115,6 +120,7 @@ const AccessPage = () => {
                 </div>
             </div>
         
+            <div className="error">{error}</div>
         </section>
     )
 }

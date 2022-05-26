@@ -57,7 +57,7 @@ const StudentsList = () => {
         if (index >= startInd && index <= endInd) {
             return (
                 <li key={item.id}>
-                    <div className="students_item">
+                    <div className="students_item faded">
                         <div className="item_img">
                             <img src={checkIcon} alt="check"/>
                         </div>

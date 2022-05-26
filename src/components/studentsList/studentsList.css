@@ -56,3 +56,17 @@ li {
     margin-top: 10px;
     color:rgba(0, 0, 0, .6);
 }
+
+.faded{
+    animation-name: faded;
+    animation-duration: 1.5s;
+  }
+  
+  @keyframes faded{
+      from{
+          opacity: 0;
+      }
+      to{
+          opacity: 1;
+      }
+  }

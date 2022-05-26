@@ -85,7 +85,7 @@ const AddEditStudent = () => {
     if (!editId && !add) return(null)
 
     return (
-        <div className="overlay">
+        <div className="overlay faded">
             <div className="modal" id="consultation">
                 <div className="modal__subtitle">{add? 'Add a student' : 'Editing a student'}</div>
                 <div className="modal__band"></div>

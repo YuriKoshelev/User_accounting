@@ -93,3 +93,10 @@ label {
 .btn_login_arrow span:nth-child(2) {
     transform: rotate(-45deg);  
 }
+
+.error {
+    margin: 0 auto;
+    margin-top: 15px;
+    color: red;
+    font-weight: 600;
+}
