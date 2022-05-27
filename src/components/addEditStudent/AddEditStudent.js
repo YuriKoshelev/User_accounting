@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { v4 as uuidv4 } from 'uuid'
 import './addEditStudent.css'
 
 import {studentsUpdate, editStudentUpdate, addUpdate, addStudent} from '../studentsList/studentsSlice'
@@ -10,18 +11,15 @@ const AddEditStudent = () => {
     const [lastName, setLastName] = useState('')
     const [email, setEmail] = useState('')
     const [groupId, setGroupID] = useState('')
+    const [error_feilds, setError_feilds] = useState('')
 
 
     const {students, editId, add} = useSelector(state => state.students)
     const dispatch = useDispatch()
 
-    useEffect(() => {
-        
-        setFirstName('')
-        setLastName('')
-        setEmail('')
-        setGroupID('')
+    const formatEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
 
+    useEffect(() => {
         for (let item of students) {
             if (item.id === editId) {
                 setFirstName(item.first_name)
@@ -34,23 +32,44 @@ const AddEditStudent = () => {
 
     const onChangeFirstName = (event) => {
         setFirstName(event.target.value)
+        setError_feilds('')
     }
 
     const onChangeLastName = (event) => {
         setLastName(event.target.value)
+        setError_feilds('')
     }
 
     const onChangeEmail = (event) => {
         setEmail(event.target.value)
+        setError_feilds('')
     }
 
     const onChangeGroupId = (event) => {
         setGroupID(event.target.value)
+        setError_feilds('')
+    }
+
+    const clearFields = () => {
+        setFirstName('')
+        setLastName('')
+        setEmail('')
+        setGroupID('')
+        setError_feilds('')
     }
 
     const onClickSave = (event) => {
         event.preventDefault()
         
+        if (error_firstname || error_lastname || error_email) return
+
+        if (!firstName || !lastName || !email) {
+            setError_feilds('Some fields are not filled in')
+            return
+        }
+
+        clearFields()
+
         if (editId) {
             const newStudents = JSON.parse(JSON.stringify(students))
             const newArr = newStudents.map((item) => {
@@ -66,6 +85,7 @@ const AddEditStudent = () => {
             dispatch(editStudentUpdate(''))
         } else {
             const newStudent = {
+                id: uuidv4(),
                 first_name: firstName,
                 last_name: lastName,
                 email: email,
@@ -80,9 +100,19 @@ const AddEditStudent = () => {
         event.preventDefault()
         if (editId) dispatch(editStudentUpdate(''))
         else dispatch(addUpdate(false))
+        clearFields()
     }
 
     if (!editId && !add) return(null)
+
+    let error_firstname = null
+    if (firstName && firstName.length < 3) error_firstname = 'Min of 3 characters'
+
+    let error_lastname = null
+    if (lastName && lastName.length < 3) error_lastname = 'Min of 3 characters'
+
+    let error_email = null
+    if (email && !formatEmail.test(email)) error_email = 'Invalid format'
 
     return (
         <div className="overlay faded">
@@ -95,16 +125,19 @@ const AddEditStudent = () => {
                            type="text"
                            value={firstName}
                            onChange={onChangeFirstName}/>
+                    <div className='error_form'>{error_firstname}</div>
                     <input name="last_name" required 
                            placeholder="Last name" 
                            type="text"
                            value={lastName}
                            onChange={onChangeLastName}/>
+                    <div className='error_form'>{error_lastname}</div>
                     <input name="email" required 
                            placeholder="E-mail" 
                            type="email"
                            value={email}
                            onChange={onChangeEmail}/>
+                    <div className='error_form'>{error_email}</div>       
                     <input name="group_id" 
                            placeholder="Group id" 
                            type="text"
@@ -119,6 +152,7 @@ const AddEditStudent = () => {
                                 {add? 'Add' : 'Save'}
                                 </button>
                     </div>
+                    <div className='error_form'>{error_feilds}</div>
                 </form>
             </div>
         </div>

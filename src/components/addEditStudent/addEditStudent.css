@@ -44,7 +44,6 @@
 .form_edit input {
     width: 250px;
     height: 20px;
-    margin-bottom: 10px;
     padding-left: 10px;
 }
 
@@ -56,6 +55,8 @@
 }
 
 .edit_button_cancel, .edit_button_submit {
+    margin-top: 10px;
+    margin-bottom: 10px;
     cursor: pointer;
     border-radius: 20px;
     border-color:rgb(208, 208, 208);
@@ -68,4 +69,10 @@
 
 .edit_button_cancel:hover, .edit_button_submit:hover {
     background-color:#cb6919;
+}
+
+.error_form {
+    height: 10px;
+    font-size: 12px;
+    color: red;
 }
