@@ -1,19 +1,20 @@
 import React, {useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
-import useStudentsService from '../../services/StudentsService';
+import useStudentsService from '../../services/StudentsService'
 
 import './studentsList.css'
 import checkIcon from '../../resources/img/check.webp'
+import btn_delete from '../../resources/img/delete.svg'
 
-import {studentsUpdate, editStudentUpdate} from './studentsSlice'
+import {studentsUpdate, editStudentUpdate, pagesUpdate} from './studentsSlice'
 
 const StudentsList = () => {
 
-    const {students, currentPage, access, token} = useSelector(state => state.students)
+    const {students, currentPage, access, token, user} = useSelector(state => state.students)
     const dispatch = useDispatch()
     const history = useHistory()
-    const {getStudents} = useStudentsService()
+    const {getStudents, deleteStudent, getProfileUser} = useStudentsService()
 
     useEffect(() => {
         
@@ -22,25 +23,20 @@ const StudentsList = () => {
         getStudents(token)
         .then((res) => {
             console.log(res)
+            dispatch(studentsUpdate(res.data.student_list.data))
+
+            const pages = res.data.student_list.last_page
+            const newArr = []
+            for (let i = 1; i <= pages * 3; i++) {
+                newArr.push(i)
+            }
+
+            if (res.data.student_list.data.length < 10) newArr.pop()
+            if (res.data.student_list.data.length < 5) newArr.pop()
+
+            dispatch(pagesUpdate(newArr))
         })
 
-        //Создаем фейковые данные*********************
-        if (students.length === 0) {
-            let i = 0
-            const newArr = []
-            while (i <= 62) {
-                i++
-                const student = {
-                    id: String(i),
-                    study_group_id: '',
-                    email: `email${i}@list.ru`,
-                    first_name: `Name${i}`,
-                    last_name: `LastName${i}` 
-                }
-                newArr.push(student)
-            }
-            dispatch(studentsUpdate(newArr))
-        }
     }, [])
 
     if (!access) {
@@ -49,6 +45,25 @@ const StudentsList = () => {
 
     const onClickEmail = (id) => {
         dispatch(editStudentUpdate(id))
+    }
+
+    const onClickUser = (event) => {
+        getProfileUser(token)
+            .then((res) => {
+                
+            })
+    }
+
+    const onClickDelete = (id) => {
+        deleteStudent(id, token)
+            .then(() => {
+                const newStudents = JSON.parse(JSON.stringify(students))
+                const newArr = newStudents.filter((item) => {
+                    if (item.id === id) return false
+                    return true
+                })
+                dispatch(studentsUpdate(newArr))
+            })
     }
 
     const arrStudents = students.map((item, index) => {
@@ -69,7 +84,11 @@ const StudentsList = () => {
                         </div>
                         <div className="item_groups">
                             <div className="item_id_group">{item.study_group_id ? item.study_group_id : '...'}</div>
-                            <div className="item_name_grouo">Default group</div>
+                            <div className="item_name_grouo">{item.study_group.title ? item.study_group.title : 'Default group'}</div>
+                        </div>
+                        <div className='delete'
+                             onClick={() => {onClickDelete(item.id)}}>
+                            <img src={btn_delete} alt="delete" />
                         </div>
                     </div>
                 </li>
@@ -80,7 +99,12 @@ const StudentsList = () => {
     return (
         <>
             <div className="students_heading">User List</div>
-            <div className="students_line"></div>
+            <div className="students_line">
+                <div className='user_info'
+                     onClick={onClickUser}>
+                         {user}
+                </div>
+            </div>
             <div className="students_list">
                 <ul>
                     {

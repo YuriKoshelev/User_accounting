@@ -8,12 +8,8 @@ const useStudentsService = () => {
     const getHeaders= (token = null) => {
         const headers = {
             'Content-Type': 'application/json',
-            email: 'dementor@egggis.ru',
-            password: 'testpassword1',
-            token: ''
+            'Authorization': `Bearer ${token}` 
         } 
-
-        if (token) headers.token = token
 
         return headers
         
@@ -26,13 +22,13 @@ const useStudentsService = () => {
 
     }
 
-    const getStudents = async (token) => {
+    const getStudents = async (token, page = 1) => {
 
-        const res = await request(`${_apiBase}/api/v1/app/students`, "GET", null, getHeaders(token));
+        const res = await request(`${_apiBase}/api/v1/app/students?page=${page}`, "GET", null, getHeaders(token));
         return res
     }
 
-    const addStudent = async (body, token) => {
+    const addStudentRequest = async (body, token) => {
         
         const res = await request(`${_apiBase}/api/v1/app/students`, "POST", body, getHeaders(token));
         return res
@@ -44,7 +40,19 @@ const useStudentsService = () => {
         return res
     }
 
-    return {checkAccess, getStudents, addStudent, editStudent}
+    const deleteStudent = async (id, token) => {
+        
+        const res = await request(`${_apiBase}/api/v1/app/students/${id}`, "DELETE", null, getHeaders(token));
+        return res
+    }
+
+    const getProfileUser = async (token) => {
+
+        const res = await request(`${_apiBase}/api/v1/app/profile`, "GET", null, getHeaders(token));
+        return res
+    }
+
+    return {checkAccess, getStudents, addStudentRequest, editStudent, deleteStudent, getProfileUser}
 }
 
 export default useStudentsService;

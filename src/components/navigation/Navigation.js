@@ -1,51 +1,74 @@
 import React, {useEffect, useState} from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
+import useStudentsService from '../../services/StudentsService'
 import './navigation.css'
 import logoutIcon from '../../resources/img/logout.svg'
 
-import {pagesUpdate, currentPageUpdate, studentsClear, addUpdate} from '../studentsList/studentsSlice'
+import {pagesUpdate, 
+        currentPageUpdate, 
+        studentsClear, 
+        addUpdate, 
+        addStudents,
+        currentServerPagesUpdate} from '../studentsList/studentsSlice'
 
 const Navigation = () => {
 
-    const [currentPages, setCurrentPages] = useState(5)
+    const [pagesLoaded, setPagesLoaded] = useState(1)
 
-    const {students, pages, currentPage, access} = useSelector(state => state.students)
+    const {students, pages, currentPage, access, currentServerPage, token} = useSelector(state => state.students)
     const dispatch = useDispatch()
     const history = useHistory()
+    const {getStudents} = useStudentsService()
 
     useEffect(() => {
         
         if (!access) return
 
-        updatePages(1)
-        dispatch(currentPageUpdate(1))
-    }, [students.length])
-
-    const updatePages = (pageStart) => {
-        let countPages = Math.floor(students.length / 5)
-        if ((students.length / 5) > countPages) countPages++
-        const newArr = []
-        for (let i = pageStart; i <= countPages; i++) {
-            newArr.push(i)
+        if (currentPage === 0 || currentPage === 1) {
+            dispatch(currentPageUpdate(1))
+        } else {
+            if (pages.length < currentPage) dispatch(currentPageUpdate(currentPage - 1))
+            else dispatch(currentPageUpdate(currentPage))  
         }
-
-        setCurrentPages(pageStart + 4)
-        dispatch(pagesUpdate(newArr))
-    }
+    }, [students.length, pages.length])
 
     const onClick = (num) => {
         dispatch(currentPageUpdate(num))
     }
 
     const onClickNext = () => {
-        updatePages(currentPages + 1)
-        dispatch(currentPageUpdate(currentPages + 1))
+        
+        if (currentServerPage + 1 > pagesLoaded) {
+            getStudents(token, currentServerPage + 1)
+            .then((res) => {
+                dispatch(addStudents(res.data.student_list.data))
+                setPagesLoaded(pagesLoaded + 1)
+
+                const pages = res.data.student_list.last_page
+                const newArr = []
+                for (let i = 1; i <= pages * 3; i++) {
+                    newArr.push(i)
+                }
+
+                if (res.data.student_list.data.length < 10) newArr.pop()
+                if (res.data.student_list.data.length < 5) newArr.pop()
+
+                dispatch(pagesUpdate(newArr))
+                dispatch(currentPageUpdate((currentServerPage + 1) * 3 - 2))
+                dispatch(currentServerPagesUpdate(currentServerPage + 1))
+                
+            })
+        } else {    
+            dispatch(currentPageUpdate((currentServerPage + 1) * 3 - 2))
+            dispatch(currentServerPagesUpdate(currentServerPage + 1))
+        }
+
     }
 
     const onClickPrev = () => {
-        updatePages(currentPages - 9)
-        dispatch(currentPageUpdate(currentPages - 5))
+        dispatch(currentServerPagesUpdate(currentServerPage - 1))
+        dispatch(currentPageUpdate(currentServerPage * 3 - 3))
     }
 
     const onClickLogout = () => {
@@ -63,7 +86,9 @@ const Navigation = () => {
     if (!access) return(null)
 
     const newPages = pages.map((item, index) => {
-        if (index > 4) return null
+        if (index > currentServerPage * 3 - 1) return null
+        if (index < currentServerPage * 3 - 3) return null
+
         let className = 'students_nav_active' 
 
         if (item === currentPage) {
@@ -82,16 +107,16 @@ const Navigation = () => {
     })
 
     let navNext = null
-    if (pages.length > 5) {
+    if (pages.length > 3) {
         navNext = <div>
                     <div className="students_nav_page"
-                         onClick={() => {onClickNext()}}>Next >></div>
+                         onClick={() => {onClickNext()}}>{'Next >>'}</div>
                     <div className="students_nav_active"></div>
                 </div>
     }
 
     let navPrev = null
-    if (currentPages > 5) {
+    if (currentServerPage > 1) {
         navPrev = <div>
                     <div className="students_nav_page"
                          onClick={() => {onClickPrev()}}>{'<< Prev'}</div>

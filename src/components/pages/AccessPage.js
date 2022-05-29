@@ -5,7 +5,7 @@ import useStudentsService from '../../services/StudentsService';
 import './accessPage.css'
 import logo from '../../resources/img/Logo.svg'
 
-import {accessUpdate, setToken} from '../studentsList/studentsSlice'
+import {accessUpdate, setToken, setUserState} from '../studentsList/studentsSlice'
 
 const AccessPage = () => {
     
@@ -56,6 +56,7 @@ const AccessPage = () => {
 
             dispatch(setToken(res.data.token))
             dispatch(accessUpdate(true))
+            dispatch(setUserState(user))
             history.push('/main')
         })
         .catch((res) => {

@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
+import useStudentsService from '../../services/StudentsService'
 import './addEditStudent.css'
 
-import {studentsUpdate, editStudentUpdate, addUpdate, addStudent} from '../studentsList/studentsSlice'
+import {studentsUpdate, editStudentUpdate, addUpdate, addStudents} from '../studentsList/studentsSlice'
 
 const AddEditStudent = () => {
 
@@ -14,8 +15,9 @@ const AddEditStudent = () => {
     const [error_feilds, setError_feilds] = useState('')
 
 
-    const {students, editId, add} = useSelector(state => state.students)
+    const {students, editId, add, token} = useSelector(state => state.students)
     const dispatch = useDispatch()
+    const {editStudent, addStudentRequest} = useStudentsService()
 
     const formatEmail = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
 
@@ -72,27 +74,55 @@ const AddEditStudent = () => {
 
         if (editId) {
             const newStudents = JSON.parse(JSON.stringify(students))
-            const newArr = newStudents.map((item) => {
+            let editItem = {}
+            let newArr = newStudents.map((item) => {
                 if (editId === item.id) {
                     item.first_name = firstName
                     item.last_name = lastName
                     item.email = email
                     item.study_group_id = groupId
+                    editItem = item
                 }
                 return item;
             })
-            dispatch(studentsUpdate(newArr))
-            dispatch(editStudentUpdate(''))
+
+            editStudent(editItem, editId, token)
+                .then((res) => {
+                    newArr = newArr.map((item) => {
+                        if (editId === item.id) {
+                            return res.data.student
+                        }
+                        return item;
+                    })
+                    dispatch(studentsUpdate(newArr))
+                    dispatch(editStudentUpdate(''))
+                })
+                .catch(() => {
+                    setError_feilds('An error has occurred, please try again later')
+                })
         } else {
             const newStudent = {
                 id: uuidv4(),
                 first_name: firstName,
                 last_name: lastName,
                 email: email,
-                study_group_id: groupId
+                study_group_id: groupId,
+                study_group: {
+                    title: ''
+                }
             }
-            dispatch(addStudent([newStudent]))
-            dispatch(addUpdate(false))
+
+            addStudentRequest(newStudent, token)
+                .then((res) => {
+                    console.log('add', res)
+                    const newStudent = res.data.student
+                    newStudent.study_group = {
+                        title: ''
+                    }
+                    dispatch(addStudents([newStudent]))
+                    dispatch(addUpdate(false))
+                })
+            
         }
     }
 

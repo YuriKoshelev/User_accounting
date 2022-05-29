@@ -3,11 +3,13 @@ import { createSlice } from '@reduxjs/toolkit'
 const initialState = {
     students: [],
     pages: [],
-    currentPage: 0, 
+    currentPage: 0,
+    currentServerPage: 1, 
     errorLoading: false,
     loading: false,
     access: false,
     add: false,
+    user: '',
     editId: '',
     token: ''
 }
@@ -19,8 +21,8 @@ const clientsSlice = createSlice({
         studentsUpdate: (state, action) => {
             state.students = action.payload
         },
-        addStudent: (state, action) => {
-            state.students = [...action.payload, ...state.students]
+        addStudents: (state, action) => {
+            state.students = [...state.students, ...action.payload]
         },
         studentsClear: (state) => {
             state.students = []
@@ -30,6 +32,9 @@ const clientsSlice = createSlice({
         },
         pagesUpdate: (state, action) => {
             state.pages = action.payload
+        },
+        currentServerPagesUpdate: (state, action) => {
+            state.currentServerPage = action.payload
         },
         loadStudentEdit: (state, action) => {
             state.students = action.payload
@@ -48,6 +53,9 @@ const clientsSlice = createSlice({
         },
         setToken: (state, action) => {
             state.token = action.payload
+        },
+        setUserState: (state, action) => {
+            state.user = action.payload
         }
     }
 });
@@ -59,13 +67,15 @@ export default reducer;
 export const {
     studentsUpdate,
     studentsClear,
-    addStudent,
+    addStudents,
     pagesUpdate,
     currentPageUpdate,
+    currentServerPagesUpdate,
     loadStudentEdit,
     accessUpdate,
     loadingUpdate,
     editStudentUpdate,
     addUpdate,
-    setToken
+    setToken,
+    setUserState
 } = actions;

@@ -16,6 +16,8 @@ export const useHttp = () => {
                                 data: body,
                                 headers: headers
                             });
+            
+            //console.log('response', response)
 
             const data = response
 
