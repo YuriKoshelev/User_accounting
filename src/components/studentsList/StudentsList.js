@@ -3,18 +3,18 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import useStudentsService from '../../services/StudentsService'
 
-import './studentsList.css'
+import './studentsList.scss'
 import checkIcon from '../../resources/img/check.webp'
 import btn_delete from '../../resources/img/delete.svg'
 
-import {studentsUpdate, editStudentUpdate, pagesUpdate} from './studentsSlice'
+import {studentsUpdate, editStudentUpdate, pagesUpdate, setShowUserProfile} from './studentsSlice'
 
 const StudentsList = () => {
 
     const {students, currentPage, access, token, user} = useSelector(state => state.students)
     const dispatch = useDispatch()
     const history = useHistory()
-    const {getStudents, deleteStudent, getProfileUser} = useStudentsService()
+    const {getStudents, deleteStudent} = useStudentsService()
 
     useEffect(() => {
         
@@ -48,10 +48,7 @@ const StudentsList = () => {
     }
 
     const onClickUser = (event) => {
-        getProfileUser(token)
-            .then((res) => {
-                
-            })
+        dispatch(setShowUserProfile(true))
     }
 
     const onClickDelete = (id) => {

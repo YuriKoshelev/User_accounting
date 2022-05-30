@@ -16,20 +16,18 @@
     background-color: #f2f2f2;
     padding: 38px 40px 40px 40px;
     border-radius: 20px;
-}
-
-.modal__band {
-    height: 30px;
-    background-color: #e18c46;
-    border-radius: 20px;
-    margin-top: 10px
-}
-
-.modal__subtitle {
-    color: #0d0d0d;
-    font-size: 18px;
-    font-weight: 700;
-    text-align: center;
+    &__band {
+        height: 30px;
+        background-color: #e18c46;
+        border-radius: 20px;
+        margin-top: 10px
+    }
+    &__subtitle {
+        color: #0d0d0d;
+        font-size: 18px;
+        font-weight: 700;
+        text-align: center;
+    }
 }
 
 .form_edit {
@@ -39,13 +37,12 @@
     align-items: center;
     height: 88%;
     justify-content: space-evenly;
-}
-
-.form_edit input {
-    width: 250px;
-    height: 20px;
-    padding-left: 10px;
-}
+    input {
+        width: 250px;
+        height: 20px;
+        padding-left: 10px;
+    }
+} 
 
 .edit_buttons {
     display: flex;
@@ -63,12 +60,11 @@
     border-style: none;
     background-color:#e17c29;
     color: white;
-    height: 20px;
+    height: 25px;
     width: 100px;
-}
-
-.edit_button_cancel:hover, .edit_button_submit:hover {
-    background-color:#cb6919;
+    &:hover {
+        background-color:#cb6919;
+    }
 }
 
 .error_form {

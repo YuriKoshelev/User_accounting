@@ -2,6 +2,7 @@ import React from "react"
 import StudentsList from "../studentsList/StudentsList"
 import Navigation from "../navigation/Navigation"
 import AddEditStudent from "../addEditStudent/AddEditStudent"
+import UserProfile from "../userProfile/UserProfile"
 
 
 const Main = () => {
@@ -13,6 +14,7 @@ const Main = () => {
                     <Navigation/>
             </section>
             <AddEditStudent/>
+            <UserProfile/>
         </>
     )
 }

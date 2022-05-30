@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react"
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from "react-redux"
 import useStudentsService from '../../services/StudentsService';
-import './accessPage.css'
+import './accessPage.scss'
 import logo from '../../resources/img/Logo.svg'
 
 import {accessUpdate, setToken, setUserState} from '../studentsList/studentsSlice'
@@ -25,6 +25,7 @@ const AccessPage = () => {
 
             if (data.token) {
                 dispatch(setToken(data.token))
+                dispatch(setUserState(data.user))
                 dispatch(accessUpdate(true))
                 history.push('/main')
             }   

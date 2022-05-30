@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import useStudentsService from '../../services/StudentsService'
-import './addEditStudent.css'
+import './addEditStudent.scss'
 
 import {studentsUpdate, editStudentUpdate, addUpdate, addStudents} from '../studentsList/studentsSlice'
 
@@ -146,7 +146,7 @@ const AddEditStudent = () => {
 
     return (
         <div className="overlay faded">
-            <div className="modal" id="consultation">
+            <div className="modal">
                 <div className="modal__subtitle">{add? 'Add a student' : 'Editing a student'}</div>
                 <div className="modal__band"></div>
                 <form className="form_edit" action="#">                

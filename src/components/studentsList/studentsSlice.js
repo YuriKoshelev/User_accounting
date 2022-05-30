@@ -9,6 +9,7 @@ const initialState = {
     loading: false,
     access: false,
     add: false,
+    showUserProfile: false,
     user: '',
     editId: '',
     token: ''
@@ -56,7 +57,11 @@ const clientsSlice = createSlice({
         },
         setUserState: (state, action) => {
             state.user = action.payload
+        },
+        setShowUserProfile: (state, action) => {
+            state.showUserProfile = action.payload
         }
+
     }
 });
 
@@ -77,5 +82,6 @@ export const {
     editStudentUpdate,
     addUpdate,
     setToken,
-    setUserState
+    setUserState,
+    setShowUserProfile
 } = actions;

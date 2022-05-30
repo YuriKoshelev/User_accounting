@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import useStudentsService from '../../services/StudentsService'
-import './navigation.css'
+import './navigation.scss'
 import logoutIcon from '../../resources/img/logout.svg'
 
 import {pagesUpdate, 
@@ -109,7 +109,7 @@ const Navigation = () => {
     let navNext = null
     if (pages.length > 3) {
         navNext = <div>
-                    <div className="students_nav_page"
+                    <div className="students_nav_page next"
                          onClick={() => {onClickNext()}}>{'Next >>'}</div>
                     <div className="students_nav_active"></div>
                 </div>
@@ -118,7 +118,7 @@ const Navigation = () => {
     let navPrev = null
     if (currentServerPage > 1) {
         navPrev = <div>
-                    <div className="students_nav_page"
+                    <div className="students_nav_page prev"
                          onClick={() => {onClickPrev()}}>{'<< Prev'}</div>
                 </div>
     }
