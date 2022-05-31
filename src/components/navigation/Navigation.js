@@ -10,16 +10,26 @@ import {pagesUpdate,
         studentsClear, 
         addUpdate, 
         addStudents,
-        currentServerPagesUpdate} from '../studentsList/studentsSlice'
+        currentServerPagesUpdate,
+        setLastPage,
+        loadingUpdate} from '../studentsList/studentsSlice'
 
 const Navigation = () => {
 
     const [pagesLoaded, setPagesLoaded] = useState(1)
 
-    const {students, pages, currentPage, access, currentServerPage, token} = useSelector(state => state.students)
+    const {students, 
+           pages, 
+           currentPage, 
+           access, 
+           currentServerPage, 
+           token, 
+           lastPage,
+           loading} = useSelector(state => state.students)
+    
     const dispatch = useDispatch()
     const history = useHistory()
-    const {getStudents} = useStudentsService()
+    const {getStudents, sort} = useStudentsService()
 
     useEffect(() => {
         
@@ -40,6 +50,8 @@ const Navigation = () => {
     const onClickNext = () => {
         
         if (currentServerPage + 1 > pagesLoaded) {
+            if (loading) return
+            dispatch(loadingUpdate(true))
             getStudents(token, currentServerPage + 1)
             .then((res) => {
                 dispatch(addStudents(res.data.student_list.data))
@@ -57,7 +69,10 @@ const Navigation = () => {
                 dispatch(pagesUpdate(newArr))
                 dispatch(currentPageUpdate((currentServerPage + 1) * 3 - 2))
                 dispatch(currentServerPagesUpdate(currentServerPage + 1))
-                
+                dispatch(setLastPage(pages))  
+            })
+            .finally(() => {
+                dispatch(loadingUpdate(false))
             })
         } else {    
             dispatch(currentPageUpdate((currentServerPage + 1) * 3 - 2))
@@ -107,7 +122,7 @@ const Navigation = () => {
     })
 
     let navNext = null
-    if (pages.length > 3) {
+    if (pages.length > 3 && lastPage > currentServerPage) {
         navNext = <div>
                     <div className="students_nav_page next"
                          onClick={() => {onClickNext()}}>{'Next >>'}</div>

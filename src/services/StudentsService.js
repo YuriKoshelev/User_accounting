@@ -52,7 +52,16 @@ const useStudentsService = () => {
         return res
     }
 
-    return {checkAccess, getStudents, addStudentRequest, editStudent, deleteStudent, getProfileUser}
+    const sort = (field, students) => {
+        const studentsSort = JSON.parse(JSON.stringify(students))
+        studentsSort.sort((a, b) => {
+            if (a[field] > b[field]) return 1
+            if (a[field] < b[field]) return -1
+            return 0
+        })
+        return(studentsSort)
+    }
+    return {checkAccess, getStudents, addStudentRequest, editStudent, deleteStudent, getProfileUser, sort}
 }
 
 export default useStudentsService;

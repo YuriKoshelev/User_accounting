@@ -11,6 +11,7 @@ const initialState = {
     add: false,
     showUserProfile: false,
     user: '',
+    lastPage: 0,
     editId: '',
     token: ''
 }
@@ -60,6 +61,9 @@ const clientsSlice = createSlice({
         },
         setShowUserProfile: (state, action) => {
             state.showUserProfile = action.payload
+        },
+        setLastPage: (state, action) => {
+            state.lastPage = action.payload
         }
 
     }
@@ -83,5 +87,6 @@ export const {
     addUpdate,
     setToken,
     setUserState,
-    setShowUserProfile
+    setShowUserProfile,
+    setLastPage
 } = actions;
