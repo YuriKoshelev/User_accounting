@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { v4 as uuidv4 } from 'uuid'
 import useStudentsService from '../../services/StudentsService'
-import './addEditStudent.scss'
+import StyledAddEdit from '../style/StyleAddEdit'
 
 import {studentsUpdate, editStudentUpdate, addUpdate, addStudents} from '../studentsList/studentsSlice'
 
@@ -145,47 +145,49 @@ const AddEditStudent = () => {
     if (email && !formatEmail.test(email)) error_email = 'Invalid format'
 
     return (
-        <div className="overlay faded">
-            <div className="modal">
-                <div className="modal__subtitle">{add? 'Add a student' : 'Editing a student'}</div>
-                <div className="modal__band"></div>
-                <form className="form_edit" action="#">                
-                    <input name="first_name" required 
-                           placeholder="First name" 
-                           type="text"
-                           value={firstName}
-                           onChange={onChangeFirstName}/>
-                    <div className='error_form'>{error_firstname}</div>
-                    <input name="last_name" required 
-                           placeholder="Last name" 
-                           type="text"
-                           value={lastName}
-                           onChange={onChangeLastName}/>
-                    <div className='error_form'>{error_lastname}</div>
-                    <input name="email" required 
-                           placeholder="E-mail" 
-                           type="email"
-                           value={email}
-                           onChange={onChangeEmail}/>
-                    <div className='error_form'>{error_email}</div>       
-                    <input name="group_id" 
-                           placeholder="Group id" 
-                           type="text"
-                           value={groupId}
-                           onChange={onChangeGroupId}/>
-                    <div className="edit_buttons">
-                        <button className="edit_button_cancel"
-                                onClick={onClickCancel}>
-                                Cancel</button>
-                        <button className="edit_button_submit"
-                                onClick={onClickSave}>
-                                {add? 'Add' : 'Save'}
-                                </button>
-                    </div>
-                    <div className='error_form'>{error_feilds}</div>
-                </form>
+        <StyledAddEdit>
+            <div className="overlay faded">
+                <div className="modal">
+                    <div className="modal__subtitle">{add? 'Add a student' : 'Editing a student'}</div>
+                    <div className="modal__band"></div>
+                    <form className="form_edit" action="#">                
+                        <input name="first_name" required 
+                            placeholder="First name" 
+                            type="text"
+                            value={firstName}
+                            onChange={onChangeFirstName}/>
+                        <div className='error_form'>{error_firstname}</div>
+                        <input name="last_name" required 
+                            placeholder="Last name" 
+                            type="text"
+                            value={lastName}
+                            onChange={onChangeLastName}/>
+                        <div className='error_form'>{error_lastname}</div>
+                        <input name="email" required 
+                            placeholder="E-mail" 
+                            type="email"
+                            value={email}
+                            onChange={onChangeEmail}/>
+                        <div className='error_form'>{error_email}</div>       
+                        <input name="group_id" 
+                            placeholder="Group id" 
+                            type="text"
+                            value={groupId}
+                            onChange={onChangeGroupId}/>
+                        <div className="edit_buttons">
+                            <button className="edit_button_cancel"
+                                    onClick={onClickCancel}>
+                                    Cancel</button>
+                            <button className="edit_button_submit"
+                                    onClick={onClickSave}>
+                                    {add? 'Add' : 'Save'}
+                                    </button>
+                        </div>
+                        <div className='error_form'>{error_feilds}</div>
+                    </form>
+                </div>
             </div>
-        </div>
+        </StyledAddEdit>
     )
 }
 

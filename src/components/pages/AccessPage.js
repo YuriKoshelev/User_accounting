@@ -1,8 +1,8 @@
 import React, {useState, useEffect} from "react"
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from "react-redux"
-import useStudentsService from '../../services/StudentsService';
-import './accessPage.scss'
+import useStudentsService from '../../services/StudentsService'
+import StyledAccess from '../style/StyleAccess'
 import logo from '../../resources/img/Logo.svg'
 
 import {accessUpdate, setToken, setUserState} from '../studentsList/studentsSlice'
@@ -82,48 +82,51 @@ const AccessPage = () => {
 
 
     return (
-        <section className="access">
         
-            <div className="logo">
-                <img src={logo} alt="Logo"/>
-            </div>
+        <StyledAccess>    
+            <section className="access">
             
-            <div className="heading_descr">Wecome to the Learning Management System</div>
-            <div className="heading_sybdescr">Please log in to continue</div>
-
-            <form className="form_access" action="#">
-                <input id="user" 
-                       name="user" 
-                       required placeholder="User name" 
-                       type="text"
-                       value={user}
-                       onChange={onChangeUser}/>
-                <input id="password" 
-                       name="password" 
-                       required placeholder="Password" 
-                       type="password"
-                       value={password}
-                       onChange={onChangePassword}/>
-                <div>
-                    <input type="checkbox" 
-                           id="remember" 
-                           name="remember"
-                           onClick={onClickCheckBox}/>
-                    <label for="remember">Remember me</label>
+                <div className="logo">
+                    <img src={logo} alt="Logo"/>
                 </div>
-            </form>
+                
+                <div className="heading_descr">Wecome to the Learning Management System</div>
+                <div className="heading_sybdescr">Please log in to continue</div>
 
-            <div className="btn_login"
-                 onClick={onLogin}>
-                <div className="btn_login_text">Log in</div>
-                <div className="btn_login_arrow">
-                    <span></span>
-                    <span></span>
+                <form className="form_access" action="#">
+                    <input id="user" 
+                        name="user" 
+                        required placeholder="User name" 
+                        type="text"
+                        value={user}
+                        onChange={onChangeUser}/>
+                    <input id="password" 
+                        name="password" 
+                        required placeholder="Password" 
+                        type="password"
+                        value={password}
+                        onChange={onChangePassword}/>
+                    <div>
+                        <input type="checkbox" 
+                            id="remember" 
+                            name="remember"
+                            onClick={onClickCheckBox}/>
+                        <label for="remember">Remember me</label>
+                    </div>
+                </form>
+
+                <div className="btn_login"
+                    onClick={onLogin}>
+                    <div className="btn_login_text">Log in</div>
+                    <div className="btn_login_arrow">
+                        <span></span>
+                        <span></span>
+                    </div>
                 </div>
-            </div>
-        
-            <div className="error">{error}</div>
-        </section>
+            
+                <div className="error">{error}</div>
+            </section>
+        </StyledAccess>
     )
 }
 

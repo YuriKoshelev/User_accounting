@@ -4,8 +4,6 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import AccessPage from '../pages/AccessPage'
 import Main from '../pages/Main'
 
-import './App.css'
-
 function App() {
   return (
     <Router>

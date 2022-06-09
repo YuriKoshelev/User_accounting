@@ -1,7 +1,13 @@
+import styled from "styled-components"
+import userSvg from '../../resources/img/user.svg'
+import paspasswordSvg from '../../resources/img/password.svg'
+
+const StyledAccess = styled.section`
 .access {
     margin: 0 auto;
     height: 400px;
     width: 330px;
+    display: block;
     .logo {
         margin-top: 50%;
     }
@@ -16,10 +22,10 @@
         display: flex;
         flex-direction: column;
         #user {
-            background: url(../../resources/img/user.svg) no-repeat center left;
+            background: url(${userSvg}) no-repeat center left;
         }
         #password {
-            background: url(../../resources/img/password.svg) no-repeat center left;
+            background: url(${paspasswordSvg}) no-repeat center left;
         }
         #remember {
             height: 10px;
@@ -83,4 +89,6 @@ input {
     padding-left: 30px;
     outline: none;
 }
+`
 
+export default StyledAccess

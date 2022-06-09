@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react"
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import useStudentsService from '../../services/StudentsService'
-import './navigation.scss'
+import StyledNavigation from "../style/StyleNavigation"
 import logoutIcon from '../../resources/img/logout.svg'
 
 import {pagesUpdate, 
@@ -139,7 +139,7 @@ const Navigation = () => {
     }
 
     return (
-        <>
+        <StyledNavigation>
             <div className="students_nav">
                 {navPrev}
                 {newPages}
@@ -154,7 +154,7 @@ const Navigation = () => {
                 <div className="logout"
                      onClick={() => {onClickLogout()}}>Log Out</div>
             </div>
-        </>
+        </StyledNavigation>
     )
 }
 

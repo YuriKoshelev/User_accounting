@@ -4,7 +4,6 @@ import { useHistory } from 'react-router-dom'
 import Spinner from '../spinner/Spinnner'
 import useStudentsService from '../../services/StudentsService'
 
-import './studentsList.scss'
 import checkIcon from '../../resources/img/check.webp'
 import btn_delete from '../../resources/img/delete.svg'
 
